@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const connectDB = require("./config/db");
 const app = express();
 
 // Middleware to handle CORS
@@ -16,6 +17,9 @@ app.use(
 
 // Middleware
 app.use(express.json());
+
+// Database connection
+connectDB();
 
 // Routes
 // app.use("/api/auth", authRoutes);
