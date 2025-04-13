@@ -49,7 +49,7 @@ const registerUser = async (req, res) => {
             profileImageUrl: user.profileImageUrl,
             token: generateToken(user._id)
         });
-    } catch {
+    } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
@@ -82,7 +82,7 @@ const loginUser = async (req, res) => {
             token: generateToken(user._id)
         });
 
-    } catch {
+    } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
@@ -97,7 +97,7 @@ const getUserProfile = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         res.json(user);
-    } catch {
+    } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
@@ -129,7 +129,7 @@ const updateUserProfile = async (req, res) => {
             role: updatedUser.role,
             token: generateToken(updatedUser._id)
         });
-    } catch {
+    } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
