@@ -1,7 +1,5 @@
-const { Promise } = require("mongoose");
 const Task = require("../models/Task");
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
 
 // @desc    Get all users (Admin only)
 // @route   GET /api/users/
