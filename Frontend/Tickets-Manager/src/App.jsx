@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom"
+import { Toaster } from 'react-hot-toast';
 
 import Login from './pages/Auth/Login'
 import SignUp from './pages/Auth/SignUp'
@@ -15,6 +16,7 @@ import ManageUsers from './pages/Admin/ManageUsers'
 import UserDashboard from './pages/User/UserDashboard'
 import MyTasks from './pages/User/MyTasks'
 import ViewTaskDetails from './pages/User/ViewTaskDetails'
+
 
 
 const Root = () => {
@@ -58,6 +60,13 @@ const App = () => {
           </Routes>
         </Router>
       </div>
+
+      <Toaster
+        toastOptions={{
+          className: '',
+          style: { fontSize: "13px" }
+        }}
+      />
     </UserProvider>
   )
 }
