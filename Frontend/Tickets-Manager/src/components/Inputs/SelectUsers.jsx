@@ -56,19 +56,19 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                     className='card-btn'
                     onClick={() => setIsModalOpen(true)}
                 >
-                    <LuUsers className='text-sm' /> Add Memebers
+                    <LuUsers className='text-sm' /> Add Members
                 </button>
             )}
 
 
-            {/* {selectedUsersAvatars.length > 0 && ( */}
+            {selectedUsersAvatars.length > 0 && (
                 <div
                     className='cursor-pointer'
                     onClick={() => setIsModalOpen(true)}
                 >
-                    <AvatarGroup avatars={selectedUsersAvatars} maxVisible={3} />
+                    <AvatarGroup avatars={selectedUsersAvatars} maxVisible={5} />
                 </div>
-            {/* )} */}
+            )}
 
             <Modal
                 isOpen={isModalOpen}

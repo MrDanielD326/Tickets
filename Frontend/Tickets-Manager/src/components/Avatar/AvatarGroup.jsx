@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AvatarGroup = ({ avatars, maxVisible }) => {
+const AvatarGroup = ({ avatars, maxVisible = 5 }) => {
     return (
         <div className=''>
             {avatars.slice(0, maxVisible).map((avatar, index) => (
