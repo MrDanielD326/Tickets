@@ -66,7 +66,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                     className='cursor-pointer'
                     onClick={() => setIsModalOpen(true)}
                 >
-                    <AvatarGroup avatars={selectedUsersAvatars} maxVisible={5} />
+                    <AvatarGroup avatars={selectedUsersAvatars} maxVisible={3} />
                 </div>
             )}
 
