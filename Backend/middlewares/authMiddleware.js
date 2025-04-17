@@ -5,19 +5,23 @@ const User = require("../models/User");
 
 // Middleware to protect routes
 const protect = async (req, res, next) => {
-    try {
-        let token = req.headers.authorization;
+    let token;
 
-        if (token && token.startsWith("Bearer")) {
-            token = token.split(" ")[1]; // Token extractor
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        try {
+            token = req.headers.authorization.split(" ")[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select("-password");
+            if (!req.user) {
+                return res.status(401).json({ message: "Not authorized, user not found" });
+            }
             next();
-        } else {
-            res.status(401).json({ message: "Not authorized, No taken available..." });
+        } catch (err) {
+            return res.status(401).json({ message: "Not authorized, token failed" });
         }
-    } catch {
-        res.status(401).json({ message: "Token failed", error: error.message });
+    }
+    if (!token) {
+        return res.status(401).json({ message: "Not authorized, no token" });
     }
 };
 

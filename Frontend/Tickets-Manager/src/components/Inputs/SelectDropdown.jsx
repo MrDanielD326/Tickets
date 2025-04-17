@@ -13,11 +13,12 @@ const SelectDropdown = ({ options, value, onChange, placeholder }) => {
             {/* Dropdown button */}
             <button
                 className='w-full text-sm text-black outline-none bg-white border border-slate-100 px-2.5 py-3 rounded-md mt-2 flex justify-between items-center'
-                onClick={() => setIsOpen(!open)}
+                onClick={() => setIsOpen(!isOpen)}
             >
                 {value ? options.find((opt) => opt.value === value)?.label : placeholder}
-                <span className='m1-2'>
-                    {isOpen ? <LuChevronDown classNorotate-180me='' /> : <LuChevronDown className='' />}
+                <span className='ml-2'>
+                    {isOpen ? <LuChevronDown className='transform rotate-180' /> : <LuChevronDown />
+                    }
                 </span>
             </button>
 
@@ -31,7 +32,6 @@ const SelectDropdown = ({ options, value, onChange, placeholder }) => {
                     ))}
                 </div>
             )}
-
         </div>
     )
 }

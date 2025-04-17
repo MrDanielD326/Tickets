@@ -91,42 +91,42 @@ const AdminDashboard = () => {
           </div>
         </div>
         <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-5'>
-          <InfoCard
-            label="Total Tasks"
-            color="bg-primary"
-            value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.All || 0)}
-          />
-          <InfoCard
-            label="Pending Tasks"
-            color="bg-violet-500"
-            value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.All || 0)}
-          />
-          <InfoCard
-            label="In Progress Tasks"
-            color="bg-cyan-500"
-            value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.All || 0)}
-          />
-          <InfoCard
-            label="Completed Tasks"
-            color="bg-lime-500"
-            value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.All || 0)}
-          />
-        </div>
+  <InfoCard
+    label="Total Tasks"
+    color="bg-primary"
+    value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.All || 0)} // Ensure safe access
+  />
+  <InfoCard
+    label="Pending Tasks"
+    color="bg-violet-500"
+    value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.pendingTasks || 0)} // Safe access
+  />
+  <InfoCard
+    label="In Progress Tasks"
+    color="bg-cyan-500"
+    value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.inProgressTasks || 0)} // Safe access
+  />
+  <InfoCard
+    label="Completed Tasks"
+    color="bg-lime-500"
+    value={addThousandsSeperator(dashboardData?.charts?.taskDistribution?.completedTasks || 0)} // Safe access
+  />
+</div>
+
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6'>
         <div>
           <div className='card'>
             <div className='flex items-center justify-between'>
-              <h5 className='font-medium'> Task Distribution </h5>
+              <h5 className='font-medium'> Task Distribution in Pie </h5>
             </div>
             <CustomPieChart data={pieChartData} colors={COLORS} />
           </div>
         </div>
-
         <div>
           <div className='card'>
             <div className='flex items-center justify-between'>
-              <h5 className='font-medium'> Task Distribution </h5>
+              <h5 className='font-medium'> Task Distribution in Bar </h5>
             </div>
             <CustomBarChart data={barChartData} />
           </div>

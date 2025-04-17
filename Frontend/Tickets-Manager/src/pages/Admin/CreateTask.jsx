@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import DashboardLayout from '../../components/layouts/DashboardLayout'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import DashboardLayout from '../../components/layouts/DashboardLayout';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LuTrash } from 'react-icons/lu';
 import { PRIORITY_DATA } from '../../utils/data';
 import SelectDropdown from '../../components/Inputs/SelectDropdown';
@@ -12,6 +12,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 import moment from 'moment';
 import Modal from '../../components/Modal/Modal';
 import DeleteAlert from '../../components/Alert/DeleteAlert';
+import toast from 'react-hot-toast';
 
 const CreateTask = () => {
   const location = useLocation();
@@ -34,24 +35,10 @@ const CreateTask = () => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
 
-  const handleValueChange = (key, value) => {
-    setTaskData((prevData) => ({ ...prevData, [key]: value }));
-  };
+  const handleValueChange = (key, value) => setTaskData(prevData => ({ ...prevData, [key]: value }));
 
-  const clearData = () => {
-    // Reset form
-    setTaskData({
-      title: "",
-      description: "",
-      priority: "Low",
-      dueDate: null,
-      assignedTo: [],
-      todoChecklist: [],
-      attachments: []
-    });
-  };
+  const clearData = () => { setTaskData(formData) };
 
-  // Create Task
   const createTask = async () => {
     setLoading();
 
@@ -59,8 +46,7 @@ const CreateTask = () => {
       const todoList = taskData.todoChecklist?.map((item) => ({
         text: item, completed: false
       }));
-
-      const response = await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
+      await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
         ...taskData,
         dueDate: new Date(taskData.dueDate).toString(),
         todoChecklist: todoList
@@ -83,23 +69,17 @@ const CreateTask = () => {
 
     try {
       const todoList = taskData.todoChecklist?.map((item) => {
-        const prevTodoChecklist = currentTask?.todoChecklist || [];
-        const matchedTask = prevTodoChecklist.find((task) => task.text == item);
-        return {
-          text: item,
-          completed: matchedTask ? matchedTask.completed : false
-        }
+        const matchedTask = currentTask?.todoChecklist?.find(task => task.text === item);
+        return { text: item, completed: matchedTask?.completed || false };
       });
-
-      const response = await axiosInstance.post(API_PATHS.TASKS.UPDATE_TASK(taskId), {
+      await axiosInstance.post(API_PATHS.TASKS.UPDATE_TASK(taskId), {
         ...taskData,
         dueDate: new Date(taskData.dueDate).toString(),
         todoChecklist: todoList
       });
-
       toast.success("Task Updated Successfully...");
     } catch (error) {
-      console.error("Error creating task:", error);
+      console.error("Error updating task:", error);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -107,8 +87,8 @@ const CreateTask = () => {
   };
 
   const handleSubmit = async () => {
-    setError(null)
-
+    setError(null);
+  
     // Input validation
     if (!taskData.title.trim()) {
       setError("Title is required.");
@@ -123,30 +103,30 @@ const CreateTask = () => {
       return;
     }
     if (taskData.assignedTo?.length === 0) {
-      setError("Task not assigned to ay member");
+      setError("Task not assigned to any member");
       return;
     }
     if (taskData.todoChecklist?.length === 0) {
-      setError("Add atleast one todo task");
+      setError("Add at least one todo task");
       return;
     }
+  
+    // If taskId exists, it's an update, otherwise it's a new task
     if (taskId) {
-      updateTask()
-      return;
+      await updateTask(); // Ensure you await async call
+    } else {
+      await createTask(); // Ensure you await async call
     }
-    createTask();
   };
+  
 
-  // Get Task info by ID
   const getTaskDetailsById = async () => {
     try {
       const response = await axiosInstance.get(API_PATHS.TASKS.GET_TASK_BY_ID(taskId));
-
       if (response.data) {
         const taskInfo = response.data;
         setCurrentTask(taskInfo);
-
-        setTaskData((prevData) > ({
+        setTaskData((prevData) => ({
           title: taskInfo.title,
           description: taskInfo.description,
           priority: taskInfo.priority,
@@ -157,31 +137,27 @@ const CreateTask = () => {
         }))
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching task details:", error);
     }
   };
 
   useEffect(() => {
     if (taskId) {
-      getTaskDetailsById(taskId);
+      getTaskDetailsById(taskId)
     }
-
-    return () => { }
   }, [taskId]);
-
 
   // Delete Task
   const deleteTask = async () => {
     try {
       await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
       setOpenDeleteAlert(false);
-      toast.success("Expense details deleted successfully");
+      toast.success("Task deleted successfully");
       navigate('/admin/tasks');
     } catch (error) {
-      console.error("Error deleting expense:", error.response?.data?.message || error.message);
+      console.error("Error deleting task:", error.response?.data?.message || error.message);
     }
   };
-
 
   return (
     <DashboardLayout activeMenu={"Create Task"}>
@@ -193,8 +169,9 @@ const CreateTask = () => {
               {taskId && (
                 <button
                   className='flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer'
-                  onClick={() => setOpenDeleteAlert(true)}>
-                  <LuTrash className='rext-base' /> Delete
+                  onClick={() => setOpenDeleteAlert(true)}
+                >
+                  <LuTrash className='text-base' /> Delete
                 </button>
               )}
             </div>
@@ -232,18 +209,16 @@ const CreateTask = () => {
                 <input
                   className='form-input'
                   placeholder='Mention Due Date'
-                  value={taskData.dueDate}
+                  value={taskData.dueDate || ''}
                   onChange={({ target }) => handleValueChange("dueDate", target.value)}
-                  type='Date'
+                  type='date'
                 />
               </div>
               <div className='col-span-12 md:col-span-3'>
                 <label className='text-xs font-medium text-slate-600'> Assign To </label>
                 <SelectUsers
                   selectedUsers={taskData.assignedTo}
-                  setSelectedUsers={(value) => {
-                    handleValueChange("assignedTo", value);
-                  }}
+                  setSelectedUsers={(value) => handleValueChange("assignedTo", value)}
                 />
               </div>
             </div>
@@ -279,7 +254,7 @@ const CreateTask = () => {
       </div>
 
       <Modal title={"Delete Task"} isOpen={openDeleteAlert} onClose={() => setOpenDeleteAlert(false)}>
-        <DeleteAlert content="Are you sure you want to delete this task?" onDelete={() => deleteTask()} />
+        <DeleteAlert content="Are you sure you want to delete this task?" onDelete={deleteTask} />
       </Modal>
     </DashboardLayout>
   )

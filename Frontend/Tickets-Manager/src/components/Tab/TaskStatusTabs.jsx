@@ -14,7 +14,7 @@ const TaskStatusTabs = ({ tabs, activeTab, setActiveTab }) => (
                     onClick={() => setActiveTab(tab.label)}
                 >
                     <div className='flex items-center'>
-                        <span className='text-xs'> {tab.label} </span>
+                        <span className='text-xs'> {tab.label} </span> &nbsp;
                         <span
                             key={tab.label}
                             className={`text-xs ml2 px-2 py-0.5 rounded-full ${activeTab === tab.label

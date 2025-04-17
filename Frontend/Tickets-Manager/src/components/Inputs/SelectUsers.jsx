@@ -32,7 +32,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
     const selectedUsersAvatars = allUsers
         .filter((user) => selectedUsers.includes(user._id))
-        .map((user) => user.profleImageUrl);
+        .map((user) => user.profileImageUrl);
 
     useEffect(() => {
         getAllUsers();
@@ -42,7 +42,6 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
         if (selectedUsers.length === 0) {
             setTempSelectedUsers([]);
         }
-        return () => { }
     }, [selectedUsers]);
 
     return (
@@ -61,7 +60,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 <div className='space-y-4 h-[60vh] overflow-y-auto'>
                     {allUsers.map((user) => (
                         <div className='flex items-center gap-4 p-3 border-b border-gray-200' key={user._id}>
-                            <img className='w-10 h-10 rounded-full' src={user.profleImageUrl} alt={user.name} />
+                            <img className='w-10 h-10 rounded-full' src={user.profileImageUrl} alt={user.name} />
                             <div className='flex-1'>
                                 <p className='font-medium text-gray-800 dark:text-white'> {user.name} </p>
                                 <p className='text-[13px] text-gray-500'> {user.email} </p>
@@ -77,10 +76,10 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 </div>
                 <div className='flex justify-end gap-4 pt-4'>
                     <button className='card-btn' onClick={() => setIsModalOpen(false)}> CANCEL </button>
-                    <button className='card-btn-fill' onClick={() => setIsModalOpen(false)}> DONE </button>
+                    <button className='card-btn-fill' onClick={handleAssign}> DONE </button>
                 </div>
-            </Modal >
-        </div >
+            </Modal>
+        </div>
     )
 }
 

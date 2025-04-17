@@ -25,8 +25,6 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    let profileImageUrl ='';
-
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
@@ -44,6 +42,8 @@ const SignUp = () => {
 
     setError("");
 
+    let profileImageUrl = '';
+
     // SignUp API call
     try {
       // Upload image if present
@@ -53,7 +53,7 @@ const SignUp = () => {
       }
 
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-        name: fullName, email, password, adminInviteToken
+        name: fullName, email, password, adminInviteToken, profileImageUrl
       });
 
       const { token, role } = response.data;
@@ -70,12 +70,29 @@ const SignUp = () => {
         }
       }
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
+      console.log(error); // Log the error for debugging
+
+      if (error.response) {
+        // Check if error response exists
+        if (error.response.data && error.response.data.message) {
+          setError(error.response.data.message);  // Specific message from API
+        } else {
+          setError("An error occurred while processing your request.");
+        }
+      } else if (error.request) {
+        // No response from the server
+        setError("No response from the server. Please try again later.");
       } else {
-        setError("Something went wrong. Please try again.");
+        // Something else happened during setup
+        setError("An unexpected error occurred. Please try again.");
       }
     }
+  };
+
+
+  // Navigate to login on button click
+  const handleLoginRedirect = () => {
+    navigate("/login");
   };
 
   return (
@@ -119,7 +136,9 @@ const SignUp = () => {
           <button type='submit' className='btn-primary'> SIGN UP </button>
           <p className='text-[13px] text-slate-800 mt-3'>
             Already have an account? &nbsp;
-            <Link className='font-medium text-primary hover:underline' to="/login"> Login </Link>
+            <button type="button" className='font-medium text-primary hover:underline' onClick={handleLoginRedirect}>
+              Login
+            </button>
           </p>
         </form>
       </div>

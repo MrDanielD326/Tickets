@@ -36,7 +36,7 @@ const MyTasks = () => {
 
       setTabs(statusArray);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching tasks:", error);
     }
   };
 
@@ -46,7 +46,6 @@ const MyTasks = () => {
 
   useEffect(() => {
     getAllTasks(filterStatus);
-    return () => { }
   }, [filterStatus]);
 
   return (
@@ -54,7 +53,7 @@ const MyTasks = () => {
       <div className='my-5'>
         <div className='flex flex-col lg:flex-row lg:items-center justify-between'>
           <div className='flex items-center justify-between gap-3'>
-            <h2 className='text-xl md:text-xl font-medium'> My Tasks </h2>
+            <h2 className='text-xl md:text-xl font-medium'>My Tasks</h2>
           </div>
           {tabs?.[0]?.count > 0 && (
             <div className='flex items-center gap-3'>
@@ -63,7 +62,7 @@ const MyTasks = () => {
           )}
         </div>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-4'>
-          {allTasks?.map((item, index) => {
+          {allTasks?.map((item) => (
             <TaskCard
               key={item._id}
               title={item.title}
@@ -73,13 +72,13 @@ const MyTasks = () => {
               progress={item.progress}
               createdAt={item.createdAt}
               dueDate={item.dueDate}
-              asssignedTo={item.asssignedTo?.map((item) => item.profileImageUrl)}
+              assignedTo={item.asssignedTo?.map((item) => item.profileImageUrl)}
               attachmentCount={item.attachments?.length || 0}
               completedTodoCount={item.completedTodoCount || 0}
               todoChecklist={item.todoChecklist || []}
-              onClick={() => { handleClick(item._id) }}
+              onClick={() => handleClick(item._id)}
             />
-          })}
+          ))}
         </div>
       </div>
     </DashboardLayout>

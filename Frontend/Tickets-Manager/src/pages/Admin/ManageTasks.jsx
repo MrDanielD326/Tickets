@@ -6,6 +6,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 import { LuFileSpreadsheet } from 'react-icons/lu';
 import TaskStatusTabs from '../../components/Tab/TaskStatusTabs';
 import TaskCard from '../../components/Card/TaskCard';
+import toast from 'react-hot-toast';
 
 const ManageTasks = () => {
   const [allTasks, setAllTasks] = useState([]);
@@ -77,9 +78,6 @@ const ManageTasks = () => {
         <div className='flex flex-col lg:flex-row lg:items-center justify-between'>
           <div className='flex items-center justify-between gap-3'>
             <h2 className='text-xl md:text-xl font-medium'> My Tasks </h2>
-            <button className='flex download-btn' onClick={handleDownloadReport}>
-              <LuFileSpreadsheet className='text-lg' /> Download Report
-            </button>
           </div>
           {tabs?.[0]?.count > 0 && (
             <div className='flex items-center gap-3'>
@@ -92,7 +90,7 @@ const ManageTasks = () => {
           )}
         </div>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-4'>
-          {allTasks?.map((item, index) => {
+          {allTasks?.map((item) => (
             <TaskCard
               key={item._id}
               title={item.title}
@@ -106,9 +104,9 @@ const ManageTasks = () => {
               attachmentCount={item.attachments?.length || 0}
               completedTodoCount={item.completedTodoCount || 0}
               todoChecklist={item.todoChecklist || []}
-              onClick={() => { handleClick(item) }}
+              onClick={() => handleClick(item)}
             />
-          })}
+          ))}
         </div>
       </div>
     </DashboardLayout>

@@ -117,7 +117,7 @@ const UserDashboard = () => {
         <div>
           <div className='card'>
             <div className='flex items-center justify-between'>
-              <h5 className='font-medium'> Task Distribution </h5>
+              <h5 className='font-medium'> Task Distribution in Pie </h5>
             </div>
             <CustomPieChart data={pieChartData} colors={COLORS} />
           </div>
@@ -125,7 +125,7 @@ const UserDashboard = () => {
         <div>
           <div className='card'>
             <div className='flex items-center justify-between'>
-              <h5 className='font-medium'> Task Distribution </h5>
+              <h5 className='font-medium'> Task Distribution in Bar </h5>
             </div>
             <CustomBarChart data={barChartData} />
           </div>
