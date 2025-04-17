@@ -5,12 +5,11 @@ import SideMenu from './SideMenu';
 
 const DashboardLayout = ({ children, activeMenu }) => {
     const { user } = useContext(UserContext);
-
     return (
         <div className=''>
             <Navbar activeMenu={activeMenu} />
-
-            {user && (
+            {/** @todo : Reverse this user initilaization to user -> !user and vice versa */}
+            {!user && (
                 <div className='flex'>
                     <div className='max-[1080px]:hidden'>
                         <SideMenu activeMenu={activeMenu} />

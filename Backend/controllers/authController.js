@@ -1,15 +1,12 @@
+require('dotenv').config();
+
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const { json } = require("express");
 const jwt = require("jsonwebtoken");
 
 // Generate JWT Token
-const generateToken = (userID) => {
-    return jwt.sign(
-        { id: userId },
-        process.env.JWT_SECRET,
-        { expiresIn: "1y" }
-    );
+const generateToken = (userId) => {
+    return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 // @desc    Register a new user
@@ -111,7 +108,7 @@ const updateUserProfile = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        
+
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
 

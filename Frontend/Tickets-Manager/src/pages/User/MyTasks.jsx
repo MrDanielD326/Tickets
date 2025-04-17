@@ -54,17 +54,11 @@ const MyTasks = () => {
       <div className='my-5'>
         <div className='flex flex-col lg:flex-row lg:items-center justify-between'>
           <div className='flex items-center justify-between gap-3'>
-            <h2 className='text-xl md:text-xl font-medium'>
-              My Tasks
-            </h2>
+            <h2 className='text-xl md:text-xl font-medium'> My Tasks </h2>
           </div>
           {tabs?.[0]?.count > 0 && (
             <div className='flex items-center gap-3'>
-              <TaskStatusTabs
-                tabs={tabs}
-                activeTab={filterStatus}
-                setActiveTab={setFilterStatus}
-              />
+              <TaskStatusTabs tabs={tabs} activeTab={filterStatus} setActiveTab={setFilterStatus} />
             </div>
           )}
         </div>
@@ -83,9 +77,7 @@ const MyTasks = () => {
               attachmentCount={item.attachments?.length || 0}
               completedTodoCount={item.completedTodoCount || 0}
               todoChecklist={item.todoChecklist || []}
-              onClick={() => {
-                handleClick(item._id);
-              }}
+              onClick={() => { handleClick(item._id) }}
             />
           })}
         </div>

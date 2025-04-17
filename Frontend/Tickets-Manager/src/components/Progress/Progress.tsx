@@ -8,7 +8,6 @@ const Progress = ({ progress, status }) => {
             default: return 'text-violet-100 text-violet-500 border border-violet-500/10';
         }
     };
-
     return (
         <div className='w-full bg-gray-200 rounded-full h-1.5'>
             <div

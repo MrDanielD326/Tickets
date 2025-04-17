@@ -41,9 +41,7 @@ const ManageTasks = () => {
   };
 
   const handleClick = (taskData) => {
-    navigate("/admin/create-task", {
-      state: { taskId: taskData._id }
-    })
+    navigate("/admin/create-task", { state: { taskId: taskData._id } })
   };
 
   // Download task report
@@ -71,45 +69,28 @@ const ManageTasks = () => {
   useEffect(() => {
     getAllTasks(filterStatus);
     return () => { }
-  }, [filterStatus])
-
+  }, [filterStatus]);
 
   return (
     <DashboardLayout activeMenu="Manage Tasks">
       <div className='my-5'>
         <div className='flex flex-col lg:flex-row lg:items-center justify-between'>
           <div className='flex items-center justify-between gap-3'>
-            <h2 className='text-xl md:text-xl font-medium'>
-              My Tasks
-            </h2>
-            <button
-              className='flex download-btn'
-              onClick={handleDownloadReport}
-            >
-              <LuFileSpreadsheet className='text-lg' />
-              Download Report
+            <h2 className='text-xl md:text-xl font-medium'> My Tasks </h2>
+            <button className='flex download-btn' onClick={handleDownloadReport}>
+              <LuFileSpreadsheet className='text-lg' /> Download Report
             </button>
           </div>
           {tabs?.[0]?.count > 0 && (
             <div className='flex items-center gap-3'>
-              <TaskStatusTabs
-                tabs={tabs}
-                activeTab={filterStatus}
-                setActiveTab={setFilterStatus}
-              />
-              <button
-                className='hidden lg:flex download-btn'
-                onClick={handleDownloadReport}
-              >
+              <TaskStatusTabs tabs={tabs} activeTab={filterStatus} setActiveTab={setFilterStatus} />
+              <button className='hidden lg:flex download-btn' onClick={handleDownloadReport}>
                 <LuFileSpreadsheet className='text-lg' />
                 Download Report
               </button>
             </div>
           )}
-
-
         </div>
-
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-4'>
           {allTasks?.map((item, index) => {
             <TaskCard
@@ -125,9 +106,7 @@ const ManageTasks = () => {
               attachmentCount={item.attachments?.length || 0}
               completedTodoCount={item.completedTodoCount || 0}
               todoChecklist={item.todoChecklist || []}
-              onClick={() => {
-                handleClick(item);
-              }}
+              onClick={() => { handleClick(item) }}
             />
           })}
         </div>

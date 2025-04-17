@@ -78,9 +78,7 @@ const TaskCard = ({
                             {attachmentCount > 0 && (
                                 <div className='flex items-center gap-2 bg-blue-50 px-2.5 py-1.5 rounded-lg'>
                                     <LuPaperclip className='text-primary' /> &nbsp;
-                                    <span className='text-xs text-gray-900'>
-                                        {attachmentCount}
-                                    </span>
+                                    <span className='text-xs text-gray-900'> {attachmentCount} </span>
                                 </div>
                             )}
                         </div>

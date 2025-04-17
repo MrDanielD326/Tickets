@@ -10,7 +10,6 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
         if (file) {
             // Update the image state
             setImage(file);
-
             // Generate preview URL from the file
             const preview = URL.createObjectURL(file);
             setPreviewUrl(preview);
@@ -22,10 +21,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
         setPreviewUrl(null);
     };
 
-    const onChooseFile = () => {
-        inputRef.current.click();
-    };
-
+    const onChooseFile = () => { inputRef.current.click() };
 
     return (
         <div className='flex justify-center mb-6'>
@@ -36,11 +32,9 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
                 onChange={handleImageChange}
                 className='hidden'
             />
-
             {!image ? (
                 <div className='w-20 h-20 flex items-center justify-center bg-blue-100/50 rounded-full relative cursor-pointer'>
                     <LuUser className='text-4xl text-primary' />
-
                     <button
                         type='button'
                         className='w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full absolute -bottom-1 -right-1 cusror-pointer'
@@ -52,11 +46,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
 
             ) : (
                 <div className='relative'>
-                    <img
-                        src={previewUrl}
-                        alt='Profile pic'
-                        className='w-20 h-20 rounded-full object-cover'
-                    />
+                    <img className='w-20 h-20 rounded-full object-cover' src={previewUrl} alt='Profile pic' />
                     <button
                         type='button'
                         className='w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 cusror-pointer'

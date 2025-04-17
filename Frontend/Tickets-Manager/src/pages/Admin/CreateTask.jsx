@@ -189,9 +189,7 @@ const CreateTask = () => {
         <div className='grid grid-cols-1 md:grid-cols-4 mt-4'>
           <div className='form-card col-span-3'>
             <div className='flex items-center justify-between'>
-              <h1 className='text-xl md:text-xl font-medium'>
-                {taskId ? "Update Task" : "Create Task"}
-              </h1>
+              <h1 className='text-xl md:text-xl font-medium'> {taskId ? "Update Task" : "Create Task"} </h1>
               {taskId && (
                 <button
                   className='flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer'
@@ -200,12 +198,8 @@ const CreateTask = () => {
                 </button>
               )}
             </div>
-
             <div className='mt-4'>
-              <label className='text-xs font-medium text-slate-600'>
-                Task Title
-              </label>
-
+              <label className='text-xs font-medium text-slate-600'> Task Title </label>
               <input
                 className='form-input'
                 placeholder='Title of the Task'
@@ -213,12 +207,8 @@ const CreateTask = () => {
                 onChange={({ target }) => handleValueChange("title", target.value)}
               />
             </div>
-
             <div className='mt-3'>
-              <label className='text-xs font-medium text-slate-600'>
-                Description
-              </label>
-
+              <label className='text-xs font-medium text-slate-600'> Description </label>
               <textarea
                 className='form-input'
                 placeholder='Description Task'
@@ -227,12 +217,9 @@ const CreateTask = () => {
                 onChange={({ target }) => handleValueChange("description", target.value)}
               />
             </div>
-
             <div className='grid grid-cols-12 gap-4 mt-2'>
               <div className='col-span-6 md:col-span-4'>
-                <label className='text-xs font-medium text-slate-600'>
-                  Priority
-                </label>
+                <label className='text-xs font-medium text-slate-600'> Priority </label>
                 <SelectDropdown
                   options={PRIORITY_DATA}
                   value={taskData.priority}
@@ -240,11 +227,8 @@ const CreateTask = () => {
                   placeholder="Select Priority"
                 />
               </div>
-
               <div className='col-span-6 md:col-span-6'>
-                <label className='text-xs font-medium text-slate-600'>
-                  Due Date
-                </label>
+                <label className='text-xs font-medium text-slate-600'> Due Date </label>
                 <input
                   className='form-input'
                   placeholder='Mention Due Date'
@@ -253,11 +237,8 @@ const CreateTask = () => {
                   type='Date'
                 />
               </div>
-
               <div className='col-span-12 md:col-span-3'>
-                <label className='text-xs font-medium text-slate-600'>
-                  Assign To
-                </label>
+                <label className='text-xs font-medium text-slate-600'> Assign To </label>
                 <SelectUsers
                   selectedUsers={taskData.assignedTo}
                   setSelectedUsers={(value) => {
@@ -266,11 +247,8 @@ const CreateTask = () => {
                 />
               </div>
             </div>
-
             <div className='mt-3'>
-              <label className='text-xs font-medium text-slate-600'>
-                Todo Checklist
-              </label>
+              <label className='text-xs font-medium text-slate-600'> Todo Checklist </label>
               <TodoListInput
                 todoList={taskData?.todoChecklist}
                 setTodoList={(value) =>
@@ -278,11 +256,8 @@ const CreateTask = () => {
                 }
               />
             </div>
-
             <div className='mt-3'>
-              <label className='text-xs font-medium text-slate-600'>
-                Add Attachments
-              </label>
+              <label className='text-xs font-medium text-slate-600'> Add Attachments </label>
               <AddAttachmentsInput
                 attachments={taskData?.attachments}
                 setAttachments={(value) =>
@@ -294,35 +269,18 @@ const CreateTask = () => {
             {error && (
               <p className='text-xs font-medium text-red-500 mt-5'> {error} </p>
             )}
-
             <div className='flex justify-end mt-7'>
-              <button
-                className='add-btn'
-                onClick={handleSubmit}
-                disabled={loading}
-              >
+              <button className='add-btn' onClick={handleSubmit} disabled={loading}>
                 {taskId ? "Update Task" : "Create Task"}
               </button>
             </div>
-
           </div>
         </div>
       </div>
 
-
-      <Modal
-        isOpen={openDeleteAlert}
-        onClose={() => setOpenDeleteAlert(false)}
-        title={"Delete Task"}
-      >
-        <DeleteAlert
-          content="Are you sure you want to delete this task?"
-          onDelete={() => deleteTask()}
-        />
+      <Modal title={"Delete Task"} isOpen={openDeleteAlert} onClose={() => setOpenDeleteAlert(false)}>
+        <DeleteAlert content="Are you sure you want to delete this task?" onDelete={() => deleteTask()} />
       </Modal>
-
-
-
     </DashboardLayout>
   )
 }

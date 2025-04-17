@@ -25,11 +25,7 @@ const SelectDropdown = ({ options, value, onChange, placeholder }) => {
             {isOpen && (
                 <div className='absolute w-full bg-white border border-slate-100 rounded-md mt-1 shadow-md z-10'>
                     {options.map((option) => (
-                        <div
-                            className='px-3 py-2 text-sm cursor-pointer hover:bg-gray-100'
-                            key={option.value}
-                            onClick={() => handleSelect(option.value)}
-                        >
+                        <div className='px-3 py-2 text-sm cursor-pointer hover:bg-gray-100' key={option.value} onClick={() => handleSelect(option.value)}>
                             {option.label}
                         </div>
                     ))}

@@ -22,24 +22,16 @@ const AddAttachmentsInput = ({ attachments, setAttachments }) => {
     return (
         <div className=''>
             {attachments.map((item, index) => (
-                <div
-                    className='flex justify-between bg-gray-50 border border-gray-100 px-3 py-2 rounded-md mb-3 mt-2'
-                    key={item}
-                >
+                <div key={item} className='flex justify-between bg-gray-50 border border-gray-100 px-3 py-2 rounded-md mb-3 mt-2'>
                     <div className='flex-1 flex items-center gap-3 border border-gray-100'>
                         <LuPaperclip className='text-gray-400' />
                         <p className='text-xs text-black'> {item} </p>
                     </div>
-
-                    <button
-                        className='cursor-pointer'
-                        onClick={() => handleDeleteOption(index)}
-                    >
+                    <button className='cursor-pointer' onClick={() => handleDeleteOption(index)}>
                         <HiOutlineTrash className='text-lg text-red-500' />
                     </button>
                 </div>
             ))}
-
             <div className='flex items-center gap-5 mt-4'>
                 <div className='flex-1 flex items-center gap-3 border border-gray-100 rounded-md px-3'>
                     <LuPaperclip className='text-gray-400' />
@@ -50,12 +42,8 @@ const AddAttachmentsInput = ({ attachments, setAttachments }) => {
                         value={option}
                         onChange={({ target }) => setOption(target.value)}
                     />
-
                 </div>
-                <button
-                    className='card-btn text-nowrap'
-                    onClick={handleAddOption}
-                >
+                <button className='card-btn text-nowrap' onClick={handleAddOption}>
                     <HiPlus className='text-lg' /> Add
                 </button>
             </div>

@@ -88,41 +88,26 @@ const ViewTaskDetails = () => {
                   {task?.status}
                 </div>
               </div>
-
               <div className='mt-4'>
                 <InfosCard label="Description" value={task?.description} />
               </div>
-
               <div className='grid grid-cols-12 gap-4 mt-4'>
                 <div className='col-span-6 md:col-span-4'>
                   <InfosCard label="Priority" value={task?.priority} />
                 </div>
                 <div className='col-span-5 md:col-span-4'>
-                  <InfosCard
-                    label="Due Date"
-                    value={task?.dueDate
-                      ? moment(task?.dueDate).format("Do MMM YYYY")
-                      : "N/A"
-                    }
-                  />
+                  <InfosCard label="Due Date" value={task?.dueDate ? moment(task?.dueDate).format("Do MMM YYYY") : "N/A"} />
                 </div>
                 <div className='col-span-6 md:col-span-4'>
-                  <label className='text-xs font-medium text-slate-500'>
-                    Assigned To
-                  </label>
-
+                  <label className='text-xs font-medium text-slate-500'> Assigned To </label>
                   <AvatarGroup
                     avatars={task?.assignedTo?.map((item) => item?.profileImageUrl || [])}
                     maxVisible={3}
                   />
-
                 </div>
               </div>
-
               <div className='mt-2'>
-                <label className='text-xs font-medium text-slate-500'>
-                  Todo Checklist
-                </label>
+                <label className='text-xs font-medium text-slate-500'> Todo Checklist </label>
                 {task?.todoChecklist?.map((item, index) => (
                   <TodoCheckList
                     key={`todo_${index}`}
@@ -132,12 +117,9 @@ const ViewTaskDetails = () => {
                   />
                 ))}
               </div>
-
               {task?.attachments?.length > 0 && (
                 <div className='mt-2'>
-                  <label className='text-xs font-medium text-slate-500'>
-                    Attachments
-                  </label>
+                  <label className='text-xs font-medium text-slate-500'> Attachments </label>
                   {task?.attachments?.map((link, index) => (
                     <Attachment
                       index={index}
@@ -148,7 +130,6 @@ const ViewTaskDetails = () => {
                   ))}
                 </div>
               )}
-
             </div>
           </div>
         )}

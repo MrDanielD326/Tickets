@@ -89,7 +89,7 @@ const createTask = async (req, res) => {
         }
 
         const task = await Task.create({
-            title, description, priority, dueDate, assignedTo, attachments, todoChecklist,
+            title, description, priority, dueDate, assignedTo, todoChecklist, attachments,
             createdBy: req.user._id
         });
 
@@ -331,13 +331,5 @@ const getUserDashboardData = async (req, res) => {
 };
 
 module.exports = {
-    getTasks,
-    getTaskById,
-    createTask,
-    updateTask,
-    deleteTask,
-    updateTaskStatus,
-    updateTaskChecklist,
-    getDashboardData,
-    getUserDashboardData
+    getTasks, getTaskById, createTask, updateTask, deleteTask, updateTaskStatus, updateTaskChecklist, getDashboardData, getUserDashboardData
 }

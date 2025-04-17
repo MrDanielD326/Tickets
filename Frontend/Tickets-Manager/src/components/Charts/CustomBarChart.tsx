@@ -25,9 +25,7 @@ const CustomBarChart = ({ data }) => {
                         dataKey={"count"}
                         fill='#FF8042'
                         radius={[10, 10, 0, 0]}
-                        // nameKey="priority"
-                        // activeDot={{ r: 8, fill: "yellow" }}
-                        // activeStyle={{ fill: 'green' }}
+                        // nameKey="priority" // activeDot={{ r: 8, fill: "yellow" }} // activeStyle={{ fill: 'green' }}
                     >
                         {data?.map((entry, index) => (
                             <Cell key={index} fill={getBarColor(entry)} />

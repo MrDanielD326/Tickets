@@ -43,9 +43,7 @@ const exportTaskReport = async (req, res) => {
             'attachment; filename="tasks_report.xlsx"'
         );
 
-        return workbook.xlsx.write(res).then(() => {
-            res.end();
-        });
+        return workbook.xlsx.write(res).then(() => { res.end() });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
@@ -100,9 +98,7 @@ const exportUsersReport = async (req, res) => {
             { header: "Completed Tasks", key: "completedTasks", width: 20 },
         ];
 
-        Object.values(userTaskMap).forEach((user) => {
-            worksheet.addRow(user);
-        });
+        Object.values(userTaskMap).forEach((user) => { worksheet.addRow(user) });
 
         res.setHeader(
             "Content-Type",

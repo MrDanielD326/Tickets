@@ -83,10 +83,8 @@ const SignUp = () => {
       <div className='lg:w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center'>
         <h3 className='text-xl font-semibold text-black'> Create an Account </h3>
         <p className='text-xs text-slate-700 mt-[5px] mb-6'> Join us today by registering to the portal </p>
-
         <form onSubmit={handleSignUp}>
           <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
-
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <Input
               label="Full Name"
@@ -117,11 +115,8 @@ const SignUp = () => {
               onChange={({ target }) => setAdminInviteToken(target.value)}
             />
           </div>
-
           {error && <p className='text-red-500 text-xs pb-2.5'> {error} </p>}
-
           <button type='submit' className='btn-primary'> SIGN UP </button>
-
           <p className='text-[13px] text-slate-800 mt-3'>
             Already have an account? &nbsp;
             <Link className='font-medium text-primary hover:underline' to="/login"> Login </Link>
