@@ -9,6 +9,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     const [allUsers, setAllUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tempSelectedUsers, setTempSelectedUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const getAllUsers = async () => {
         try {
@@ -22,7 +23,9 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     };
 
     const toggleUserSelection = (userId) => {
-        setTempSelectedUsers((prev) => prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId])
+        setTempSelectedUsers((prev) =>
+            prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
+        );
     };
 
     const handleAssign = () => {
@@ -44,6 +47,10 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
         }
     }, [selectedUsers]);
 
+    const filteredUsers = [...allUsers]
+        .filter((user) => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
     return (
         <div className='space-y-4 mt-2'>
             {selectedUsersAvatars.length === 0 && (
@@ -57,30 +64,42 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 </div>
             )}
             <Modal title={"Select Users"} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <div className='space-y-4 h-[60vh] overflow-y-auto'>
-                    {allUsers.map((user) => (
-                        <div className='flex items-center gap-4 p-3 border-b border-gray-200' key={user._id}>
-                            <img className='w-10 h-10 rounded-full' src={user.profileImageUrl} alt={user.name} />
-                            <div className='flex-1'>
-                                <p className='font-medium text-gray-800 dark:text-white'> {user.name} </p>
-                                <p className='text-[13px] text-gray-500'> {user.email} </p>
-                            </div>
-                            <input
-                                className='w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded-sm outline-none'
-                                type='checkbox'
-                                checked={tempSelectedUsers.includes(user._id)}
-                                onChange={() => toggleUserSelection(user._id)}
-                            />
-                        </div>
-                    ))}
-                </div>
-                <div className='flex justify-end gap-4 pt-4'>
-                    <button className='card-btn' onClick={() => setIsModalOpen(false)}> CANCEL </button>
-                    <button className='card-btn-fill' onClick={handleAssign}> DONE </button>
-                </div>
-            </Modal>
+  <div className='space-y-4'>
+    <div className='sticky top-0 z-10 bg-white'>
+      <input
+        type='text'
+        placeholder='Search by name...'
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className='w-full px-4 py-2 text-sm border rounded-md border-gray-300 focus:outline-none'
+      />
+    </div>
+    <div className='h-[55vh] overflow-y-auto space-y-2 pr-1'>
+      {filteredUsers.map((user) => (
+        <div className='flex items-center gap-4 p-3 border-b border-gray-200' key={user._id}>
+          <img className='w-10 h-10 rounded-full' src={user.profileImageUrl} alt={user.name} />
+          <div className='flex-1'>
+            <p className='text-[13px] text-gray-500 font-semibold'>{user.name}</p>
+            <p className='text-[13px] text-gray-500'>{user.email}</p>
+          </div>
+          <input
+            className='w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded-sm outline-none'
+            type='checkbox'
+            checked={tempSelectedUsers.includes(user._id)}
+            onChange={() => toggleUserSelection(user._id)}
+          />
         </div>
-    )
-}
+      ))}
+    </div>
+  </div>
+  <div className='flex justify-end gap-4 pt-4'>
+    <button className='card-btn' onClick={() => setIsModalOpen(false)}> CANCEL </button>
+    <button className='card-btn-fill' onClick={handleAssign}> DONE </button>
+  </div>
+</Modal>
 
-export default SelectUsers
+        </div>
+    );
+};
+
+export default SelectUsers;

@@ -161,11 +161,13 @@ const CreateTask = () => {
 
   return (
     <DashboardLayout activeMenu={"Create Task"}>
-      <div className='mt-5'>
-        <div className='grid grid-cols-1 md:grid-cols-4 mt-4'>
-          <div className='form-card col-span-3'>
-            <div className='flex items-center justify-between'>
-              <h1 className='text-xl md:text-xl font-medium'> {taskId ? "Update Task" : "Create Task"} </h1>
+      <div className='mt-5 w-full'>
+        <div className='grid grid-cols-1 md:grid-cols-4 mt-4 w-full'>
+          <div className='form-card col-span-3 w-full'>
+            <div className='flex items-center justify-between w-full'>
+              <h1 className='text-xl md:text-xl font-medium'>
+                {taskId ? "Update Task" : "Create Task"}
+              </h1>
               {taskId && (
                 <button
                   className='flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer'
@@ -175,27 +177,27 @@ const CreateTask = () => {
                 </button>
               )}
             </div>
-            <div className='mt-4'>
+            <div className='mt-4 w-full'>
               <label className='text-xs font-medium text-slate-600'> Task Title </label>
               <input
-                className='form-input'
+                className='form-input w-full'
                 placeholder='Title of the Task'
                 value={taskData.title}
                 onChange={({ target }) => handleValueChange("title", target.value)}
               />
             </div>
-            <div className='mt-3'>
+            <div className='mt-3 w-full'>
               <label className='text-xs font-medium text-slate-600'> Description </label>
               <textarea
-                className='form-input'
+                className='form-input w-full'
                 placeholder='Description Task'
                 rows={4}
                 value={taskData.description}
                 onChange={({ target }) => handleValueChange("description", target.value)}
               />
             </div>
-            <div className='grid grid-cols-12 gap-4 mt-2'>
-              <div className='col-span-6 md:col-span-4'>
+            <div className='grid grid-cols-12 gap-4 mt-2 w-full'>
+              <div className='col-span-6 md:col-span-4 w-full'>
                 <label className='text-xs font-medium text-slate-600'> Priority </label>
                 <SelectDropdown
                   options={PRIORITY_DATA}
@@ -204,17 +206,17 @@ const CreateTask = () => {
                   placeholder="Select Priority"
                 />
               </div>
-              <div className='col-span-6 md:col-span-6'>
+              <div className='col-span-6 md:col-span-6 w-full'>
                 <label className='text-xs font-medium text-slate-600'> Due Date </label>
                 <input
-                  className='form-input'
+                  className='form-input w-full'
                   placeholder='Mention Due Date'
                   value={taskData.dueDate || ''}
                   onChange={({ target }) => handleValueChange("dueDate", target.value)}
                   type='date'
                 />
               </div>
-              <div className='col-span-12 md:col-span-3'>
+              <div className='col-span-12 md:col-span-3 w-full'>
                 <label className='text-xs font-medium text-slate-600'> Assign To </label>
                 <SelectUsers
                   selectedUsers={taskData.assignedTo}
@@ -222,14 +224,14 @@ const CreateTask = () => {
                 />
               </div>
             </div>
-            <div className='mt-3'>
+            <div className='mt-3 w-full'>
               <label className='text-xs font-medium text-slate-600'> Todo Checklist </label>
               <TodoListInput
                 todoList={taskData?.todoChecklist}
                 setTodoList={(value) => handleValueChange("todoChecklist", value)}
               />
             </div>
-            <div className='mt-3'>
+            <div className='mt-3 w-full'>
               <label className='text-xs font-medium text-slate-600'> Add Attachments </label>
               <AddAttachmentsInput
                 attachments={taskData?.attachments}
@@ -237,7 +239,7 @@ const CreateTask = () => {
               />
             </div>
             {error && <p className='text-xs font-medium text-red-500 mt-5'> {error} </p>}
-            <div className='flex justify-end mt-7'>
+            <div className='flex justify-end mt-7 w-full'>
               <button className='add-btn' onClick={handleSubmit} disabled={loading}>
                 {taskId ? "Update Task" : "Create Task"}
               </button>

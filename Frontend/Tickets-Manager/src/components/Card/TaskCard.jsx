@@ -41,16 +41,16 @@ const TaskCard = ({
                 className={`px-4 border-l-[3px] ${status === "In Progress"
                     ? "border-cyan-500"
                     : status == "Completed"
-                        ? "border-indigo-500"
-                        : "border-violter-500"
+                    ? "border-indigo-500"
+                    : "border-violter-500"
                     }`
                 }
-            >
+                >
                 <p className='text-sm font-medium text-gray-800 mt-4 line-clamp02'>
                     {title}
                 </p>
                 <p className='text-xs text-gray-500 mt-1.5 line-clamp-2 leading-[18px]'>
-                    T{description}
+                    {description}
                 </p>
                 <p className='text-[13px] text-gray-700/80 font-medium mt-2 leading-[18px]'>
                     Task done: &nbsp;

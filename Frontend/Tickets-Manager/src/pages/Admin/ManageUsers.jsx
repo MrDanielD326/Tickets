@@ -23,7 +23,7 @@ const ManageUsers = () => {
   };
 
   const handleClick = (userData) => {
-    navigate("/admin/create-user", { state: { userId: userData._id } })
+    navigate("/admin/users", { state: { userId: userData._id } })
   };
 
   const handleDownloadReport = async () => {
