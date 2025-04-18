@@ -88,7 +88,7 @@ const CreateTask = () => {
 
   const handleSubmit = async () => {
     setError(null);
-  
+
     // Input validation
     if (!taskData.title.trim()) {
       setError("Title is required.");
@@ -110,7 +110,7 @@ const CreateTask = () => {
       setError("Add at least one todo task");
       return;
     }
-  
+
     // If taskId exists, it's an update, otherwise it's a new task
     if (taskId) {
       await updateTask(); // Ensure you await async call
@@ -118,7 +118,7 @@ const CreateTask = () => {
       await createTask(); // Ensure you await async call
     }
   };
-  
+
 
   const getTaskDetailsById = async () => {
     try {
@@ -226,24 +226,17 @@ const CreateTask = () => {
               <label className='text-xs font-medium text-slate-600'> Todo Checklist </label>
               <TodoListInput
                 todoList={taskData?.todoChecklist}
-                setTodoList={(value) =>
-                  handleValueChange("todoChecklist", value)
-                }
+                setTodoList={(value) => handleValueChange("todoChecklist", value)}
               />
             </div>
             <div className='mt-3'>
               <label className='text-xs font-medium text-slate-600'> Add Attachments </label>
               <AddAttachmentsInput
                 attachments={taskData?.attachments}
-                setAttachments={(value) =>
-                  handleValueChange("attachments", value)
-                }
+                setAttachments={(value) => handleValueChange("attachments", value)}
               />
             </div>
-
-            {error && (
-              <p className='text-xs font-medium text-red-500 mt-5'> {error} </p>
-            )}
+            {error && <p className='text-xs font-medium text-red-500 mt-5'> {error} </p>}
             <div className='flex justify-end mt-7'>
               <button className='add-btn' onClick={handleSubmit} disabled={loading}>
                 {taskId ? "Update Task" : "Create Task"}
@@ -252,7 +245,6 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
-
       <Modal title={"Delete Task"} isOpen={openDeleteAlert} onClose={() => setOpenDeleteAlert(false)}>
         <DeleteAlert content="Are you sure you want to delete this task?" onDelete={deleteTask} />
       </Modal>

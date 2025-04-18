@@ -24,7 +24,6 @@ const Login = () => {
       setError("Please enter a valid email address.");
       return;
     }
-
     if (!password) {
       setError("Please enter the password.");
       return;
@@ -34,29 +33,24 @@ const Login = () => {
 
     // Login API call
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
-        email, password
-      });
-
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, { email, password });
       const { token, role } = response.data;
-
-      if (token) {
-        localStorage.setItem("token", token);
-        updateUser(response.data);
-        // Redirect based on role
-        if (role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/user/dashboard");
-        }
-      }
+      return token && (localStorage.setItem("token", token), updateUser(response.data),
+        role === "admin" ? navigate("/admin/dashboard") : navigate("/user/dashboard"));
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
+      return setError(error.response?.data?.message ? error.response.data.message : "Something went wrong. Please try again.");
     }
+  };
+
+  const formInput = () => {
+    const formInputs = [
+      { label: 'Email Address', placeholder: 'Enter your email here', type: 'text', value: email, onChange: setEmail },
+      { label: 'Password', placeholder: 'Enter your password here', type: 'password', value: password, onChange: setPassword }
+    ];
+    return formInputs
+      .map(({ label, placeholder, type, value, onChange }, index) => (
+        <Input key={index} label={label} placeholder={placeholder} type={type} value={value} onChange={({ target }) => onChange(target.value)} />
+      ));
   };
 
   return (
@@ -65,20 +59,7 @@ const Login = () => {
         <h3 className='text-xl font-semibold text-black'> Welcome to the Portal </h3>
         <p className='text-xs text-slate-700 mt-[5px] mb-6'> Please enter your details to Login </p>
         <form onSubmit={handleLogin}>
-          <Input
-            label="Email Address"
-            placeholder="Enter your email here"
-            type="text"
-            value={email}
-            onChange={({ target }) => setEmail(target.value)}
-          />
-          <Input
-            label="Password"
-            placeholder="Enter your password here"
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
+          {formInput()}
           {error && <p className='text-red-500 text-xs pb-2.5'> {error} </p>}
           <button type='submit' className='btn-primary'> LOGIN </button>
           <p className='text-[13px] text-slate-800 mt-3'>

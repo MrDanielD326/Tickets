@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/layouts/AuthLayout'
 import Input from '../../components/Inputs/Input';
 import { validateEmail } from '../../utils/helper';
@@ -58,41 +58,39 @@ const SignUp = () => {
 
       const { token, role } = response.data;
 
-      if (token) {
-        localStorage.setItem("token", token);
-        updateUser(response.data);
-
-        // Redirect based on role
-        if (role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/user/dashboard");
-        }
-      }
+      return token && (
+        localStorage.setItem("token", token),
+        updateUser(response.data),
+        navigate("/login")
+      )
     } catch (error) {
       console.log(error); // Log the error for debugging
-
-      if (error.response) {
-        // Check if error response exists
-        if (error.response.data && error.response.data.message) {
-          setError(error.response.data.message);  // Specific message from API
-        } else {
-          setError("An error occurred while processing your request.");
-        }
-      } else if (error.request) {
-        // No response from the server
-        setError("No response from the server. Please try again later.");
-      } else {
-        // Something else happened during setup
-        setError("An unexpected error occurred. Please try again.");
-      }
+      return error.response
+        ? setError(error.response.data?.message
+          ? error.response.data.message
+          : "An error occurred while processing your request."
+        )
+        : setError(error.request
+          ? "No response from the server. Please try again later."
+          : "An error occurred while processing your request."
+        )
     }
   };
 
-
   // Navigate to login on button click
-  const handleLoginRedirect = () => {
-    navigate("/login");
+  const handleLoginRedirect = () => navigate("/login");
+
+  const formInput = () => {
+    const formInputs = [
+      { label: "Full Name", placeholder: "Enter your name here", type: "text", value: fullName, onChange: setFullName },
+      { label: "Email Address", placeholder: "Enter your email here", type: "text", value: email, onChange: setEmail },
+      { label: "Password", placeholder: "Enter your password here", type: "password", value: password, onChange: setPassword },
+      { label: "Admin Invite Token", placeholder: "Enter your token here", type: "text", value: adminInviteToken, onChange: setAdminInviteToken }
+    ];
+    return formInputs
+      .map(({ label, placeholder, type, value, onChange }, index) => (
+        <Input key={index} label={label} placeholder={placeholder} type={type} value={value} onChange={({ target }) => onChange(target.value)} />
+      ));
   };
 
   return (
@@ -103,34 +101,7 @@ const SignUp = () => {
         <form onSubmit={handleSignUp}>
           <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <Input
-              label="Full Name"
-              placeholder="Enter your name here"
-              type="text"
-              value={fullName}
-              onChange={({ target }) => setFullName(target.value)}
-            />
-            <Input
-              label="Email Address"
-              placeholder="Enter your email here"
-              type="text"
-              value={email}
-              onChange={({ target }) => setEmail(target.value)}
-            />
-            <Input
-              label="Password"
-              placeholder="Enter your password here"
-              type="password"
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-            <Input
-              label="Admin Invite Token"
-              placeholder="Enter your token here"
-              type="text"
-              value={adminInviteToken}
-              onChange={({ target }) => setAdminInviteToken(target.value)}
-            />
+            {formInput()}
           </div>
           {error && <p className='text-red-500 text-xs pb-2.5'> {error} </p>}
           <button type='submit' className='btn-primary'> SIGN UP </button>
