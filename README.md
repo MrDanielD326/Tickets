@@ -1,6 +1,38 @@
 
 # Tickets
 
+A lightweight, customizable project management tool built with the MERN stack for internal use within organizations. Designed to help admins assign and track employee tasks without the cost or complexity of JIRA.
+
+## Tech Stack
+
+- **Frontend**: React.js + Vite
+- **Backend**: Express.js + Node.js
+- **Database**: MongoDB
+
+---
+
+## Features
+
+- **Admin Dashboard**
+  - Assign tasks to employees
+  - View all tasks with current status
+  - Update or delete tasks
+
+- **User Dashboard**
+  - View assigned tasks
+  - Update task status (Pending, In Progress, Completed)
+  - Add comments or updates
+
+- **Authentication & Authorization**
+  - Role-based access (Admin, User)
+  - Secure login and session management
+
+- **Task Management**
+  - Title, description, priority, status, assignee
+  - Due dates and timestamps
+
+---
+
 ## Project Setup
 
 ### Backend
@@ -36,7 +68,14 @@
    ```bash
    npm run dev
 
+---
+
+
 ## Notes
 
 - Make sure both frontend and backend are running to interact with the application.
+- There is always potential for improvement and optimization, as this is an ongoing project.
 - For any login-related issues, please contact me at daniel.elohi326@gmail.com.
+
+---
+
