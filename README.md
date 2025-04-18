@@ -24,9 +24,9 @@
 
 ### Frontend
 
-1. Navigate to the `frontend/tickets-manager` folder:
+1. Navigate to the `Frontend/Tickets-Manager` folder:
    ```bash
-   cd frontend/tickets-manager
+   cd Frontend/Tickets-Manager
    ```
 2. Install dependencies:
    ```bash
@@ -39,4 +39,4 @@
 ## Notes
 
 - Make sure both frontend and backend are running to interact with the application.
-- If you face any issue, with Signing in please mail me at daniel.elohi326@gmail.com
+- For any login-related issues, please contact me at daniel.elohi326@gmail.com.
