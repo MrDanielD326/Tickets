@@ -33,7 +33,7 @@ const AddAttachmentsInput = ({ attachments, setAttachments }) => {
                 </div>
             ))}
             <div className='flex items-center gap-5 mt-4'>
-                <div className='flex-1 flex items-center gap-3 border border-gray-100 rounded-md px-3'>
+                <div className='flex-1 flex items-center gap-3 border border-gray-100 rounded-md px-3 bg-white'>
                     <LuPaperclip className='text-gray-400' />
                     <input
                         className='w-full text-[13px] text-black outline-none bg-white py-2 '

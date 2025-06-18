@@ -55,7 +55,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
         <div className='space-y-4 mt-2'>
             {selectedUsersAvatars.length === 0 && (
                 <button className='card-btn' onClick={() => setIsModalOpen(true)}>
-                    <LuUsers className='text-sm' /> Add Members
+                    <LuUsers className='text-sm' /> Add Member(s) to the Task
                 </button>
             )}
             {selectedUsersAvatars.length > 0 && (

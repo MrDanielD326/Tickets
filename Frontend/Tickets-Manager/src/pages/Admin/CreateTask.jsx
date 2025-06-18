@@ -193,6 +193,8 @@ const CreateTask = () => {
                 />
               </div>
 
+              <hr className="my-2 border-gray-200" />
+
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-4">
                   <label className="text-sm font-medium text-gray-700">Priority</label>
