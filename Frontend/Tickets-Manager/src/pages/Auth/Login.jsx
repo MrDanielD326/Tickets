@@ -44,8 +44,8 @@ const Login = () => {
 
   const formInput = () => {
     const formInputs = [
-      { label: 'Email Address', placeholder: 'Enter your email here', type: 'text', value: email, onChange: setEmail },
-      { label: 'Password', placeholder: 'Enter your password here', type: 'password', value: password, onChange: setPassword }
+      { label: 'Email Address', placeholder: 'Your quest begins with your email', type: 'text', value: email, onChange: setEmail },
+      { label: 'Password', placeholder: 'Enter your secret code', type: 'password', value: password, onChange: setPassword }
     ];
     return formInputs
       .map(({ label, placeholder, type, value, onChange }, index) => (
@@ -56,15 +56,15 @@ const Login = () => {
   return (
     <AuthLayout>
       <div className='lg:w-[50%] h-3/4 md:h-full flex flex-col justify-center'>
-        <h3 className='text-xl font-semibold text-black'> Welcome to the Portal </h3>
-        <p className='text-xs text-slate-700 mt-[5px] mb-6'> Please enter your details to Login </p>
+        <h3 className='text-xl font-semibold text-black'> Embark on Your Productivity! </h3>
+        <p className='text-xs text-slate-700 mt-[5px] mb-6'> Ready to conquer your tasks? Let the productivity begin! </p>
         <form onSubmit={handleLogin}>
           {formInput()}
           {error && <p className='text-red-500 text-xs pb-2.5'> {error} </p>}
           <button type='submit' className='btn-primary'> LOGIN </button>
           <p className='text-[13px] text-slate-800 mt-3'>
-            Don't have an account? &nbsp;
-            <Link className='font-medium text-primary hover:underline' to="/signup"> Sign up </Link>
+            New here? &nbsp;
+            <Link className='font-medium text-primary hover:underline' to="/signup"> Join the adventure! </Link>
           </p>
         </form>
       </div>

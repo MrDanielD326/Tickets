@@ -29,7 +29,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
             <div className='relative w-20 h-20'>
                 {previewUrl ? (
                     <>
-                        <img className='w-full h-full rounded-full object-cover' src={previewUrl} alt='Profile pic' />
+                        <img className='w-full h-full rounded-full object-cover border-1 border-black' src={previewUrl} alt='Profile pic' />
                         <button
                             type='button'
                             className='w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1'

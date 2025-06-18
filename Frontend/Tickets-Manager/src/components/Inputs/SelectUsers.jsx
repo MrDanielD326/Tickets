@@ -77,7 +77,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     <div className='h-[55vh] overflow-y-auto space-y-2 pr-1'>
       {filteredUsers.map((user) => (
         <div className='flex items-center gap-4 p-3 border-b border-gray-200' key={user._id}>
-          <img className='w-10 h-10 rounded-full' src={user.profileImageUrl} alt={user.name} />
+          <img className='w-10 h-10 rounded-full border-1 border-black' src={user.profileImageUrl} alt={user.name} />
           <div className='flex-1'>
             <p className='text-[13px] text-gray-500 font-semibold'>{user.name}</p>
             <p className='text-[13px] text-gray-500'>{user.email}</p>

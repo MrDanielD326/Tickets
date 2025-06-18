@@ -30,7 +30,7 @@ const Navbar = ({ activeMenu }) => {
             <div className='relative'>
                 <div className='flex items-center gap-3 mr-8 cursor-pointer' onClick={() => setShowUserPopover(!showUserPopover)}>
                     <span className='text-gray-850 text-xs'> Welcome, {user?.name?.split(' ')[0] || ""} </span>
-                    <img className='w-8 h-8 bg-slate-400 rounded-full' src={user?.profileImageUrl || 'Unavailable'} alt='Profile Pic' />
+                    <img className='w-8 h-8 bg-slate-400 rounded-full border-1 border-black' src={user?.profileImageUrl || 'Unavailable'} alt='Profile Pic' />
                 </div>
                 {showUserPopover && (
                     <div className='absolute right-8 top-12 bg-white shadow-lg rounded-lg p-4 min-w-[320px] max-w-[420px] w-auto border border-gray-200'>
@@ -43,7 +43,7 @@ const Navbar = ({ activeMenu }) => {
                         <div className='flex flex-col gap-2 pt-6'>
                             <div className='flex items-center gap-4'>
                                 <img
-                                    className='w-16 h-16 bg-slate-400 rounded-full'
+                                    className='w-16 h-16 bg-slate-400 rounded-full border-1 border-black'
                                     src={user?.profileImageUrl || 'Unavailable'}
                                     alt='Profile Pic'
                                 />
