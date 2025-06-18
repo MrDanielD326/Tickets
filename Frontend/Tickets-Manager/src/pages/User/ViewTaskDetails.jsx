@@ -15,9 +15,9 @@ const ViewTaskDetails = () => {
 
   const getStatusTagColor = (status) => {
     switch (status) {
-      case 'Completed': return 'bg-lime-100 text-lime-500 border border-lime-200';
-      case 'In Progress': return 'bg-cyan-100 text-cyan-500 border border-cyan-200';
-      default: return 'bg-violet-100 text-violet-500 border border-violet-200';
+      case 'Completed': return 'text-[#581845] bg-[#581845]/10 border border-[#581845]/20';
+      case 'In Progress': return 'text-[#900C3F] bg-[#900C3F]/10 border border-[#900C3F]/20';
+      default: return 'text-[#C70039] bg-[#C70039]/10 border border-[#C70039]/20';
     }
   };
 

@@ -16,7 +16,7 @@ const UserCard = ({ userInfo }) => (
                 <p className='text-xs text-gray-500'> {userInfo?.email} </p>
             </div>
         </div>
-        <div className='flex items-end gap-3 mt-5'>
+        <div className='flex items-end gap-2 mt-5'>
             <StatCard label="Pending" status="Pending" count={userInfo?.pendingTasks || 0} />
             <StatCard label="In Progress" status="In Progress" count={userInfo?.inProgressTasks || 0} />
             <StatCard label="Completed" status="Completed" count={userInfo?.completedTasks || 0} />

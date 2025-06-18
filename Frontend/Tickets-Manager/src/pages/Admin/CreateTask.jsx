@@ -20,7 +20,7 @@ const CreateTask = () => {
   const { taskId } = location.state || {};
   const navigate = useNavigate();
 
-  const formData = {
+  const initialFormData = () => ({
     title: "",
     description: "",
     priority: "Low",
@@ -28,9 +28,9 @@ const CreateTask = () => {
     assignedTo: [],
     todoChecklist: [],
     attachments: []
-  };
+  });
 
-  const [taskData, setTaskData] = useState(formData);
+  const [taskData, setTaskData] = useState(initialFormData());
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
@@ -38,23 +38,20 @@ const CreateTask = () => {
 
   const handleValueChange = (key, value) => setTaskData(prevData => ({ ...prevData, [key]: value }));
 
-  const clearData = () => { setTaskData(formData) };
+  const clearData = () => { setTaskData(initialFormData()) };
 
   const createTask = async () => {
-    setLoading();
-
+    setLoading(true);
     try {
       const todoList = taskData.todoChecklist?.map((item) => ({
         text: item, completed: false
       }));
       await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
         ...taskData,
-        dueDate: new Date(taskData.dueDate).toString(),
+        dueDate: taskData.dueDate ? new Date(taskData.dueDate).toString() : null,
         todoChecklist: todoList
       });
-
       toast.success("Task created successfully...");
-
       clearData();
     } catch (error) {
       console.error("Error creating task: ", error);
@@ -67,7 +64,6 @@ const CreateTask = () => {
   // Update Task
   const updateTask = async () => {
     setLoading(true);
-
     try {
       const todoList = taskData.todoChecklist?.map((item) => {
         const matchedTask = currentTask?.todoChecklist?.find(task => task.text === item);
@@ -75,7 +71,7 @@ const CreateTask = () => {
       });
       await axiosInstance.post(API_PATHS.TASKS.UPDATE_TASK(taskId), {
         ...taskData,
-        dueDate: new Date(taskData.dueDate).toString(),
+        dueDate: taskData.dueDate ? new Date(taskData.dueDate).toString() : null,
         todoChecklist: todoList
       });
       toast.success("Task Updated Successfully...");
@@ -89,8 +85,6 @@ const CreateTask = () => {
 
   const handleSubmit = async () => {
     setError(null);
-
-    // Input validation
     if (!taskData.title.trim()) {
       setError("Title is required.");
       return;
@@ -111,13 +105,11 @@ const CreateTask = () => {
       setError("Add at least one todo task");
       return;
     }
-
-    // If taskId exists, it's an update, otherwise it's a new task
     if (taskId) {
-      await updateTask(); // Ensure you await async call
-    } else {
-      await createTask(); // Ensure you await async call
+      await updateTask();
+      return;
     }
+    await createTask();
   };
 
 
@@ -162,47 +154,48 @@ const CreateTask = () => {
 
   return (
     <DashboardLayout activeMenu={"Create Task"}>
-      <div className='mt-5 w-full'>
-        {(loading && taskId) ? (
-          <CreateTaskSkeleton />
-        ) : (
-          <div className='grid grid-cols-1 md:grid-cols-4 mt-4 w-full'>
-            <div className='form-card col-span-3 w-full'>
-              <div className='flex items-center justify-between w-full'>
-                <h1 className='text-xl md:text-xl font-medium'>
-                  {taskId ? "Update Task" : "Create Task"}
-                </h1>
-                {taskId && (
-                  <button
-                    className='flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer'
-                    onClick={() => setOpenDeleteAlert(true)}
-                  >
-                    <LuTrash className='text-base' /> Delete
-                  </button>
-                )}
-              </div>
-              <div className='mt-4 w-full'>
-                <label className='text-xs font-medium text-slate-600'> Task Title </label>
+      <div className="p-4 md:p-6 space-y-6">
+        {(loading && taskId) ? <CreateTaskSkeleton /> : (
+          <>
+            <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
+              {taskId ? "Update Task" : "Create Task"}
+            </h1>
+            <div className="flex items-center justify-between mb-6">
+              {taskId && (
+                <button
+                  className="flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-3 py-1.5 border border-rose-100 hover:border-rose-300 cursor-pointer transition-colors"
+                  onClick={() => setOpenDeleteAlert(true)}
+                >
+                  <LuTrash className="text-base" /> Delete
+                </button>
+              )}
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <label className="text-sm font-medium text-gray-700">Task Title</label>
                 <input
-                  className='form-input w-full'
-                  placeholder='Title of the Task'
+                  className="form-input w-full mt-1"
+                  placeholder="Title of the Task"
                   value={taskData.title}
                   onChange={({ target }) => handleValueChange("title", target.value)}
                 />
               </div>
-              <div className='mt-3 w-full'>
-                <label className='text-xs font-medium text-slate-600'> Description </label>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">Description</label>
                 <textarea
-                  className='form-input w-full'
-                  placeholder='Description Task'
+                  className="form-input w-full mt-1"
+                  placeholder="Enter description of the task"
                   rows={4}
                   value={taskData.description}
                   onChange={({ target }) => handleValueChange("description", target.value)}
                 />
               </div>
-              <div className='grid grid-cols-12 gap-4 mt-2 w-full'>
-                <div className='col-span-6 md:col-span-4 w-full'>
-                  <label className='text-xs font-medium text-slate-600'> Priority </label>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="md:col-span-4">
+                  <label className="text-sm font-medium text-gray-700">Priority</label>
                   <SelectDropdown
                     options={PRIORITY_DATA}
                     value={taskData.priority}
@@ -210,48 +203,60 @@ const CreateTask = () => {
                     placeholder="Select Priority"
                   />
                 </div>
-                <div className='col-span-6 md:col-span-6 w-full'>
-                  <label className='text-xs font-medium text-slate-600'> Due Date </label>
+                <div className="md:col-span-4">
+                  <label className="text-sm font-medium text-gray-700">Due Date</label>
                   <input
-                    className='form-input w-full'
-                    placeholder='Mention Due Date'
+                    className="form-input w-full mt-1"
+                    placeholder="Mention Due Date"
                     value={taskData.dueDate || ''}
                     onChange={({ target }) => handleValueChange("dueDate", target.value)}
-                    type='date'
+                    type="date"
                   />
                 </div>
-                <div className='col-span-12 md:col-span-3 w-full'>
-                  <label className='text-xs font-medium text-slate-600'> Assign To </label>
+                <div className="md:col-span-4">
+                  <label className="text-sm font-medium text-gray-700">Assign To</label>
                   <SelectUsers
                     selectedUsers={taskData.assignedTo}
                     setSelectedUsers={(value) => handleValueChange("assignedTo", value)}
                   />
                 </div>
               </div>
-              <div className='mt-3 w-full'>
-                <label className='text-xs font-medium text-slate-600'> Todo Checklist </label>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">Todo Checklist</label>
                 <TodoListInput
                   todoList={taskData?.todoChecklist}
                   setTodoList={(value) => handleValueChange("todoChecklist", value)}
                 />
               </div>
-              <div className='mt-3 w-full'>
-                <label className='text-xs font-medium text-slate-600'> Add Attachments </label>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">Add Attachments</label>
                 <AddAttachmentsInput
                   attachments={taskData?.attachments}
                   setAttachments={(value) => handleValueChange("attachments", value)}
                 />
               </div>
-              {error && <p className='text-xs font-medium text-red-500 mt-5'> {error} </p>}
-              <div className='flex justify-end mt-7 w-full'>
-                <button className='add-btn' onClick={handleSubmit} disabled={loading}>
+
+              {error && (
+                <p className="text-sm font-medium text-red-500">{error}</p>
+              )}
+
+              <div className="flex justify-end">
+                <button
+                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                  onClick={handleSubmit}
+                  disabled={loading}
+                >
                   {taskId ? "Update Task" : "Create Task"}
                 </button>
               </div>
             </div>
-          </div>
+          </>
+
         )}
       </div>
+
       <Modal title={"Delete Task"} isOpen={openDeleteAlert} onClose={() => setOpenDeleteAlert(false)}>
         <DeleteAlert content="Are you sure you want to delete this task?" onDelete={deleteTask} />
       </Modal>

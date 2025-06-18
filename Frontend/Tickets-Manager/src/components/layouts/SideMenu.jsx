@@ -44,7 +44,7 @@ const SideMenu = () => {
                             } py-3 px-6 cursor-pointer transition-all duration-300 ease-in-out`
                         }
                     >
-                        <item.icon className='text-xl' />
+                        <item.icon className='text-base' />
                         {!isCollapsed && (
                             <span className={`transition-all duration-300 ease-in-out ${showText ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`}>
                                 {item.label}
@@ -73,7 +73,7 @@ const SideMenu = () => {
                                     : 'text-gray-600'
                                 } transition-colors duration-200 ease-in-out`}
                         >
-                            <item.icon className='text-xl mb-1' />
+                            <item.icon className='text-base mb-1' />
                             <span className="text-[10px] font-medium">{item.label}</span>
                         </button>
                     ))}

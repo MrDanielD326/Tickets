@@ -29,7 +29,7 @@ const Navbar = ({ activeMenu }) => {
         return (
             <div className='relative'>
                 <div className='flex items-center gap-3 mr-8 cursor-pointer' onClick={() => setShowUserPopover(!showUserPopover)}>
-                    <span className='text-gray-850 font-small'> Welcome, {user?.name?.split(' ')[0] || ""} </span>
+                    <span className='text-gray-850 text-xs'> Welcome, {user?.name?.split(' ')[0] || ""} </span>
                     <img className='w-8 h-8 bg-slate-400 rounded-full' src={user?.profileImageUrl || 'Unavailable'} alt='Profile Pic' />
                 </div>
                 {showUserPopover && (

@@ -39,16 +39,20 @@ const Tasks = ({ filterStatus, setFilterStatus, onTaskClick, onDownloadReport, i
   }, [filterStatus, getAllTasks]);
 
   return (
-    <div className="my-5">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-xl md:text-xl font-medium">{isAdmin ? "Manage Tasks" : "My Tasks"}</h2>
-        </div>
+    <div className="p-4 md:p-6 space-y-6">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
+          {isAdmin ? "Manage Tasks" : "My Tasks"}
+        </h2>
         {tabs?.[0]?.count > 0 && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <TaskStatusTabs tabs={tabs} activeTab={filterStatus} setActiveTab={setFilterStatus} />
             {isAdmin && (
-              <button className="hidden lg:flex download-btn" onClick={onDownloadReport}>
+              <button
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                onClick={onDownloadReport}
+              >
                 <LuFileSpreadsheet className="text-lg" />
                 Download Report
               </button>
@@ -56,26 +60,35 @@ const Tasks = ({ filterStatus, setFilterStatus, onTaskClick, onDownloadReport, i
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        {loading
-          ? Array.from({ length: 6 }).map((_, idx) => <TasksSkeleton key={idx} />)
-          : allTasks?.map((item) => (
-            <TaskCard
-              key={item._id}
-              title={item.title}
-              description={item.description}
-              priority={item.priority}
-              status={item.status}
-              progress={item.progress}
-              createdAt={item.createdAt}
-              dueDate={item.dueDate}
-              assignedTo={item.asssignedTo?.map(({ profileImageUrl }) => profileImageUrl)}
-              attachmentCount={item.attachments?.length || 0}
-              completedTodoCount={item.completedTodoCount || 0}
-              todoChecklist={item.todoChecklist || []}
-              onClick={() => onTaskClick(item)}
-            />
-          ))}
+
+      {/* Tasks Grid Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        {loading ? Array.from({ length: 6 }).map((_, idx) => <TasksSkeleton key={idx} />) : allTasks && allTasks.length > 0 ? (
+          allTasks.map((item) => {
+            const { _id, title, description, priority, status, progress, createdAt, dueDate, assignedTo, attachments, completedTodoCount, todoChecklist } = item;
+            return (
+              <TaskCard
+                key={_id}
+                title={title}
+                description={description}
+                priority={priority}
+                status={status}
+                progress={progress}
+                createdAt={createdAt}
+                dueDate={dueDate}
+                assignedTo={assignedTo?.map(({ profileImageUrl }) => profileImageUrl)}
+                attachmentCount={attachments?.length || 0}
+                completedTodoCount={completedTodoCount || 0}
+                todoChecklist={todoChecklist || []}
+                onClick={() => onTaskClick(item)}
+              />
+            );
+          })
+        ) : (
+          <div className="col-span-full text-center text-gray-500 py-8">
+            No tasks found.
+          </div>
+        )}
       </div>
     </div>
   );

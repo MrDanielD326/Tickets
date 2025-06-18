@@ -33,9 +33,7 @@ const ManageUsers = () => {
 
   const handleDownloadReport = async () => {
     try {
-      const response = await axiosInstance.get(API_PATHS.REPORTS.EXPORT_USERS, {
-        responseType: "blob"
-      });
+      const response = await axiosInstance.get(API_PATHS.REPORTS.EXPORT_USERS, { responseType: "blob" });
       // Create a URL for the blob
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -58,22 +56,24 @@ const ManageUsers = () => {
 
   return (
     <DashboardLayout activeMenu="Team">
-      <div className='mt-5 mb-10'>
-        <div className='flex md:flex-row md:items-center justify-between gap-4 mb-4'>
-          <h2 className='text-xl md:text-xl font-medium'>Team</h2>
-          <button className='flex items-center gap-2 download-btn' onClick={handleDownloadReport}>
-            <LuFileSpreadsheet className='text-lg' /> Download Report
+      <div className="p-4 md:p-6 space-y-6">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800">Team</h2>
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+            onClick={handleDownloadReport}
+          >
+            <LuFileSpreadsheet className="text-lg" /> Download Report
           </button>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-          {(loading && allUsers.length === 0) ? (
-            [...Array(6)].map((_, i) => <ManageUserSkeleton key={i} />)
-          ) : (
+
+        {/* Users Grid Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {(loading && allUsers.length === 0) ? [...Array(6)].map((_, i) => <ManageUserSkeleton key={i} />) : (
             [...allUsers]
               ?.sort((a, b) => a.name.localeCompare(b.name))
-              .map((user) => (
-                <UserCard key={user._id} userInfo={user} onClick={() => handleClick(user)} />
-              ))
+              .map((user) => <UserCard key={user._id} userInfo={user} onClick={() => handleClick(user)} />)
           )}
         </div>
       </div>

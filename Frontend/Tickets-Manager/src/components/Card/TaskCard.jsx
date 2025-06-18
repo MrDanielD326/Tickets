@@ -5,14 +5,14 @@ import { LuPaperclip } from 'react-icons/lu';
 import moment from 'moment';
 
 const TaskCard = ({
-    title, description, priority, status, progress, createdAt, dueDate, asssignedTo, attachmentCount, completedTodoCount, todoChecklist, onClick
+    title, description, priority, status, progress, createdAt, dueDate, assignedTo, attachmentCount, completedTodoCount, todoChecklist, onClick
 }) => {
 
     const getStatusTagColor = (status) => {
         switch (status) {
-            case 'Completed': return 'text-lime-100 text-lime-500 border border-lime-500/10';
-            case 'In Progress': return 'text-cyan-100 text-cyan-500 border border-cyan-500/10';
-            default: return 'text-violet-100 text-violet-500 border border-violet-500/10';
+            case 'Completed': return 'text-[#581845] bg-[#581845]/10 border border-[#581845]/20';
+            case 'In Progress': return 'text-[#900C3F] bg-[#900C3F]/10 border border-[#900C3F]/20';
+            default: return 'text-[#C70039] bg-[#C70039]/10 border border-[#C70039]/20';
         }
     };
 
@@ -27,26 +27,26 @@ const TaskCard = ({
     return (
         <div
             className='bg-white rounded-xl py-4 shadow-md shadow-gray-100 border border-gray-200/50 cursor-pointer'
-            onClick={onclick}
+            onClick={onClick}
         >
             <div className='flex items-end gap-3 px-4'>
-                <div className={`text-[11px] font-medium ${getStatusTagColor()} px-4 py-0.5 rounded`}>
+                <div className={`text-[11px] font-medium ${getStatusTagColor(status)} px-4 py-0.5 rounded`}>
                     {status}
                 </div>
-                <div className={`text-[11px] font-medium ${getPriorityTagColor()} px-4 py-0.5 rounded`}>
+                <div className={`text-[11px] font-medium ${getPriorityTagColor(priority)} px-4 py-0.5 rounded`}>
                     {priority} Priority
                 </div>
             </div>
             <div
                 className={`px-4 border-l-[3px] ${status === "In Progress"
                     ? "border-cyan-500"
-                    : status == "Completed"
-                    ? "border-indigo-500"
-                    : "border-violter-500"
+                    : status === "Completed"
+                        ? "border-indigo-500"
+                        : "border-violet-500"
                     }`
                 }
-                >
-                <p className='text-sm font-medium text-gray-800 mt-4 line-clamp02'>
+            >
+                <p className='text-sm font-medium text-gray-800 mt-4 line-clamp-2'>
                     {title}
                 </p>
                 <p className='text-xs text-gray-500 mt-1.5 line-clamp-2 leading-[18px]'>
@@ -74,7 +74,7 @@ const TaskCard = ({
                             </p>
                         </div>
                         <div className='flex items-center justify-between mt-3'>
-                            <AvatarGroup avatars={asssignedTo || []} />
+                            <AvatarGroup avatars={assignedTo || []} />
                             {attachmentCount > 0 && (
                                 <div className='flex items-center gap-2 bg-blue-50 px-2.5 py-1.5 rounded-lg'>
                                     <LuPaperclip className='text-primary' /> &nbsp;
