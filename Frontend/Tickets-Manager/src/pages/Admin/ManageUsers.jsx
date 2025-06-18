@@ -6,19 +6,24 @@ import { API_PATHS } from '../../utils/apiPaths';
 import { LuFileSpreadsheet } from 'react-icons/lu';
 import UserCard from '../../components/Card/UserCard';
 import toast from 'react-hot-toast';
+import ManageUserSkeleton from '../../components/Skeleton/ManageUserSkeleton';
 
 const ManageUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const getAllUsers = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(API_PATHS.USERS.GET_ALL_USERS);
       if (response.data?.length > 0) {
         setAllUsers(response.data);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,20 +57,24 @@ const ManageUsers = () => {
   }, []);
 
   return (
-    <DashboardLayout activeMenu="Team Members">
+    <DashboardLayout activeMenu="Team">
       <div className='mt-5 mb-10'>
         <div className='flex md:flex-row md:items-center justify-between gap-4 mb-4'>
-          <h2 className='text-xl md:text-xl font-medium'>Team Members</h2>
+          <h2 className='text-xl md:text-xl font-medium'>Team</h2>
           <button className='flex items-center gap-2 download-btn' onClick={handleDownloadReport}>
             <LuFileSpreadsheet className='text-lg' /> Download Report
           </button>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-          {[...allUsers]
-            ?.sort((a, b) => a.name.localeCompare(b.name))
-            .map((user) => (
-              <UserCard key={user._id} userInfo={user} onClick={() => handleClick(user)} />
-            ))}
+          {(loading && allUsers.length === 0) ? (
+            [...Array(6)].map((_, i) => <ManageUserSkeleton key={i} />)
+          ) : (
+            [...allUsers]
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((user) => (
+                <UserCard key={user._id} userInfo={user} onClick={() => handleClick(user)} />
+              ))
+          )}
         </div>
       </div>
     </DashboardLayout>

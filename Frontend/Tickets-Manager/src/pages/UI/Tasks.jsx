@@ -4,12 +4,15 @@ import { API_PATHS } from '../../utils/apiPaths';
 import TaskCard from '../../components/Card/TaskCard';
 import TaskStatusTabs from '../../components/Tab/TaskStatusTabs';
 import { LuFileSpreadsheet } from 'react-icons/lu';
+import TasksSkeleton from '../../components/Skeleton/TasksSkeleton';
 
 const Tasks = ({ filterStatus, setFilterStatus, onTaskClick, onDownloadReport, isAdmin }) => {
   const [allTasks, setAllTasks] = useState([]);
   const [tabs, setTabs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getAllTasks = useCallback(async () => {
+    setLoading(true);
     try {
       const { data } = await axiosInstance.get(API_PATHS.TASKS.GET_ALL_TASKS, {
         params: {
@@ -26,6 +29,8 @@ const Tasks = ({ filterStatus, setFilterStatus, onTaskClick, onDownloadReport, i
       ]);
     } catch (error) {
       console.error("Error fetching tasks:", error);
+    } finally {
+      setLoading(false);
     }
   }, [filterStatus]);
 
@@ -52,23 +57,25 @@ const Tasks = ({ filterStatus, setFilterStatus, onTaskClick, onDownloadReport, i
         )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        {allTasks?.map((item) => (
-          <TaskCard
-            key={item._id}
-            title={item.title}
-            description={item.description}
-            priority={item.priority}
-            status={item.status}
-            progress={item.progress}
-            createdAt={item.createdAt}
-            dueDate={item.dueDate}
-            assignedTo={item.asssignedTo?.map(({ profileImageUrl }) => profileImageUrl)}
-            attachmentCount={item.attachments?.length || 0}
-            completedTodoCount={item.completedTodoCount || 0}
-            todoChecklist={item.todoChecklist || []}
-            onClick={() => onTaskClick(item)}
-          />
-        ))}
+        {loading
+          ? Array.from({ length: 6 }).map((_, idx) => <TasksSkeleton key={idx} />)
+          : allTasks?.map((item) => (
+            <TaskCard
+              key={item._id}
+              title={item.title}
+              description={item.description}
+              priority={item.priority}
+              status={item.status}
+              progress={item.progress}
+              createdAt={item.createdAt}
+              dueDate={item.dueDate}
+              assignedTo={item.asssignedTo?.map(({ profileImageUrl }) => profileImageUrl)}
+              attachmentCount={item.attachments?.length || 0}
+              completedTodoCount={item.completedTodoCount || 0}
+              todoChecklist={item.todoChecklist || []}
+              onClick={() => onTaskClick(item)}
+            />
+          ))}
       </div>
     </div>
   );

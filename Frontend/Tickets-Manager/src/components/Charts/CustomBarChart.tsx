@@ -1,16 +1,7 @@
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-const CustomBarChart = ({ data }) => {
-    const getBarColor = (priority) => {
-        switch (priority) {
-            case 'High': return '#FF1F57';
-            case 'Medium': return '#FE9900';
-            case 'Low': return '#00BC7D';
-            default: return '#00BC7D';
-        }
-    };
-
+const CustomBarChart = ({ data, colors }) => {
     const tooltipContent = () => (
         <Tooltip cursor={{ fill: 'transparent' }}
             content={({ active, payload }) => active && payload?.length && (
@@ -34,7 +25,7 @@ const CustomBarChart = ({ data }) => {
                     {tooltipContent()}
                     <Bar dataKey="count" radius={[10, 10, 0, 0]}>
                         {data?.map((entry, index) => (
-                            <Cell key={index} fill={getBarColor(entry.priority)} />
+                            <Cell key={index} fill={colors[index % colors.length]} />
                         ))}
                     </Bar>
                 </BarChart>

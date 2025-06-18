@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/userContext';
 import moment from 'moment';
 import { addThousandsSeperator } from '../../utils/helper';
 import InfoCard from '../../components/Card/InfoCard';
@@ -8,6 +7,7 @@ import TaskListTable from '../../components/Table/TaskListTable';
 import CustomPieChart from '../../components/Charts/CustomPieChart';
 import CustomBarChart from '../../components/Charts/CustomBarChart';
 import { LuArrowRight } from 'react-icons/lu';
+import DashboardSkeleton from '../../components/Skeleton/DashboardSkeleton';
 
 const COLORS = ['#8D51FF', '#00B8BD', '#7BCE00'];
 
@@ -15,7 +15,8 @@ const Dashboard = ({ fetchDataApi, redirectPath = '/admin/tasks' }) => {
   const [dashboardData, setDashboardData] = useState(null);
   const [pieChartData, setPieChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
-  const { user } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const prepareChartData = useCallback(({ taskDistribution = {}, taskPriorityLevels = {} }) => {
@@ -24,7 +25,7 @@ const Dashboard = ({ fetchDataApi, redirectPath = '/admin/tasks' }) => {
       { status: 'In Progress', count: taskDistribution.InProgress || 0 },
       { status: 'Completed', count: taskDistribution.Completed || 0 }
     ]);
-  
+
     setBarChartData([
       { status: 'Low', count: taskPriorityLevels.Low || 0 },
       { status: 'Medium', count: taskPriorityLevels.Medium || 0 },
@@ -34,13 +35,18 @@ const Dashboard = ({ fetchDataApi, redirectPath = '/admin/tasks' }) => {
 
   const getDashboardData = useCallback(async () => {
     try {
+      setLoading(true);
+      setError(null);
       const { data } = await fetchDataApi();
       if (data) {
         setDashboardData(data);
-        prepareChartData(data?.charts);
+        prepareChartData(data?.charts || {});
       }
     } catch (error) {
       console.error('Error fetching dashboard data: ', error);
+      setError('Failed to load dashboard data. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   }, [fetchDataApi, prepareChartData]);
 
@@ -51,11 +57,10 @@ const Dashboard = ({ fetchDataApi, redirectPath = '/admin/tasks' }) => {
   const getGreeting = () => {
     const indiaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
     const hour = new Date(indiaTime).getHours();
-    const minute = new Date(indiaTime).getMinutes();
-    if (hour >= 6 && (hour < 8 || (hour === 7 && minute <= 59))) return 'Good Night';
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour >= 5 && hour < 12) return 'Good Morning';
+    if (hour >= 12 && hour < 17) return 'Good Afternoon';
+    if (hour >= 17 && hour < 21) return 'Good Evening';
+    return 'Good Night';
   };
 
   const onSeeMore = () => navigate(redirectPath);
@@ -63,11 +68,11 @@ const Dashboard = ({ fetchDataApi, redirectPath = '/admin/tasks' }) => {
   const tasksCounter = useMemo(() => {
     const taskDist = dashboardData?.charts?.taskDistribution || {};
     const taskCount = [
-        { label: 'Total Tasks', color: 'bg-primary', value: taskDist.All || 0 },
-        { label: 'Pending Tasks', color: 'bg-violet-500', value: taskDist.Pending || 0 },
-        { label: 'In Progress Tasks', color: 'bg-cyan-500', value: taskDist.InProgress || 0 },
-        { label: 'Completed Tasks', color: 'bg-lime-500', value: taskDist.Completed || 0 },
-      ];
+      { label: 'Total Tasks', color: 'bg-primary', value: taskDist.All || 0 },
+      { label: 'Pending Tasks', color: 'bg-violet-500', value: taskDist.Pending || 0 },
+      { label: 'In Progress Tasks', color: 'bg-cyan-500', value: taskDist.InProgress || 0 },
+      { label: 'Completed Tasks', color: 'bg-lime-500', value: taskDist.Completed || 0 },
+    ];
     return taskCount.map(({ label, color, value }) => (
       <InfoCard key={label} label={label} color={color} value={addThousandsSeperator(value)} />
     ));
@@ -75,41 +80,62 @@ const Dashboard = ({ fetchDataApi, redirectPath = '/admin/tasks' }) => {
 
   const taskCard = () => {
     const chartConfigs = [
-      { title: 'Task Distribution in Pie', component: <CustomPieChart data={pieChartData} colors={COLORS} /> },
-      { title: 'Task Distribution in Bar', component: <CustomBarChart data={barChartData} /> },
+      { component: <CustomPieChart data={pieChartData} colors={COLORS} /> },
+      { component: <CustomBarChart data={barChartData} colors={COLORS} /> },
     ];
     return chartConfigs.map(({ title, component }) => (
       <div key={title} className='card'>
-        <div className='flex items-center justify-between'>
-          <h5 className='font-medium'> {title} </h5>
-        </div>
         {component}
       </div>
     ));
   };
 
-  return (
-    <>
-      <div className='card my-5'>
-        <div className='col-span-3'>
-          <h2 className='text-xl md:text-2xl'> {getGreeting()}, {user?.name} </h2>
-          <p className='text-xs md:text-[13px] text-gray-400 mt-1.5'> {moment().format('dddd Do MMM YYYY')} </p>
+  if (loading) {
+    return DashboardSkeleton();
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 md:p-6">
+        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+          {error}
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-5'>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 md:p-6 space-y-6">
+      <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-3'>
+        <div>
+          <h2 className='text-xl md:text-xl font-semibold text-gray-800'>{getGreeting()}</h2>
+        </div>
+        <p className='text-sm text-gray-500'>{moment().format('dddd Do MMM YYYY')}</p>
+      </div>
+
+      <div className='bg-white rounded-lg p-4 md:p-6 shadow-sm'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6'>
           {tasksCounter}
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6'>
+
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         {taskCard()}
-        <div className='card md:col-span-2'>
-          <div className='flex items-center justify-between'>
-            <h5 className='text-lg'> Recent Tasks </h5>
-            <button className='card-btn' onClick={onSeeMore}> See All <LuArrowRight className='text-base' /> </button>
-          </div>
-          <TaskListTable tableData={dashboardData?.recentTasks || {}} />
-        </div>
       </div>
-    </>
+
+      <div className='bg-white rounded-lg p-4 md:p-6 shadow-sm'>
+        <div className='flex items-center justify-between mb-4'>
+          <h5 className='text-xl font-semibold text-gray-800'>Recent Tasks</h5>
+          <button
+            className='flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors'
+            onClick={onSeeMore}
+          >
+            See All <LuArrowRight className='text-base' />
+          </button>
+        </div>
+        <TaskListTable tableData={dashboardData?.recentTasks || []} redirectPath={redirectPath} />
+      </div>
+    </div>
   );
 };
 
